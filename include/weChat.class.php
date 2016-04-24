@@ -1,3 +1,4 @@
+hello
 <?php
 /*
 *	A PHP class for WeChat integration. 
