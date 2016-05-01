@@ -1,7 +1,7 @@
 <?php
 
 if(file_exists(ABSPATH.'/devtest.php'))
-	include(ABSPATH.'/config.php');
+	include(ABSPATH.'/devtest.php');
 else
 {
 	define("TOKEN", "devTest");
