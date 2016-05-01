@@ -1,4 +1,3 @@
-hello
 <?php
 /*
 *	A PHP class for WeChat integration. 
@@ -46,6 +45,94 @@ class WeChat
 	    $this->appId = $appId;
 	    $this->appSecret = $appSecret;
 	}
+
+	/**
+	*	This function is required for first authentication in the wechat admin
+	*	gets the echostr param, and echo a response based on the token and timestamp.	
+	*/
+	public function validateAccount()
+    {
+        $echoStr = $_GET["echostr"];
+
+        //valid signature , option
+        if($this->checkSignature()){
+        	echo $echoStr;
+        	exit;
+        }
+    }
+
+    private function checkSignature()
+	{
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];	
+        		
+		$token = TOKEN;
+		$tmpArr = array($token, $timestamp, $nonce);
+		sort($tmpArr, SORT_STRING);
+		$tmpStr = implode( $tmpArr );
+		$tmpStr = sha1( $tmpStr );
+		
+		if( $tmpStr == $signature ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function responseMsg()
+    {
+		//get post data, May be due to the different environments
+		$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+       
+      	//extract post data
+		if (!empty($postStr)){
+                
+              	$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+                $fromUsername = $postObj->FromUserName;
+                $toUsername = $postObj->ToUserName;
+                $keyword = trim($postObj->Content);
+                $time = time();
+
+                $str = "A new message was recived at: " .  date('r', $time) . "\r\n";
+                $str .= "From: " .  $fromUsername . "\r\n";
+                $str .= "Content: " .   $keyword ;
+
+                sendMail($str);
+
+                $textTpl = "<xml>
+							<ToUserName><![CDATA[%s]]></ToUserName>
+							<FromUserName><![CDATA[%s]]></FromUserName>
+							<CreateTime>%s</CreateTime>
+							<MsgType><![CDATA[%s]]></MsgType>
+							<Content><![CDATA[%s]]></Content>
+							<FuncFlag>0</FuncFlag>
+							</xml>";             
+				if(!empty( $keyword ))
+                {
+              		$msgType = "text";
+                   	$contentStr = "Up And Running" ;               	
+
+                	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+
+                /*
+				 *	The WeCHat API states that a response should be Either a formatted XML message that will be sent to the client
+				 *	Or a blank response (Empty string) in order to not send anything to the client.				 *	
+                 */
+                	//Use the empty echo for no response
+                	echo "";
+                	//Return the response:
+                	// echo $resultStr;
+                }else{
+                	echo "Input something...";
+                }
+
+        }else {
+        	echo "";
+        	exit;
+        }
+    }
+
 
 
 	public function getSignPackage() 

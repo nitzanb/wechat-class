@@ -1,4 +1,7 @@
 <?php
+//	For debugging
+error_reporting( E_ALL );
+ini_set('display_errors', 1);
 
 /** Absolute path to the Root directory. */
 if ( !defined('ABSPATH') )
@@ -8,3 +11,18 @@ if ( !defined('ABSPATH') )
 include(ABSPATH.'/config.php');
 include(ABSPATH.'/include/weChat.class.php');
 include(ABSPATH.'/include/helpers.class.php');
+
+$wechatObj = new WeChat(TOKEN,AESKey, appId, appSecret);
+
+$url = trim($_SERVER['REQUEST_URI'] , '/');
+
+if($url == '/' || empty($url))
+	$handler = '404';
+else
+{
+	
+	$parms = explode( '/', $url);
+	$handler = $parms[0];	
+
+} 		
+include(ABSPATH.'/handler/'.$handler.'.php');
