@@ -1,7 +1,7 @@
 <?php
 //	For debugging
-error_reporting( E_ALL );
-ini_set('display_errors', 1);
+//error_reporting( E_ALL );
+//ini_set('display_errors', 1);
 
 /** Absolute path to the Root directory. */
 if ( !defined('ABSPATH') )
@@ -22,7 +22,8 @@ else
 {
 	
 	$parms = explode( '/', $url);
-	$handler = $parms[0];	
+	$handler = explode('?',$parms[0]);	
+
 
 } 		
-include(ABSPATH.'/handler/'.$handler.'.php');
+include(ABSPATH.'/handler/'.$handler[0].'.php');
