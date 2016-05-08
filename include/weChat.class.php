@@ -110,9 +110,11 @@ class WeChat
 							</xml>";             
 				if(!empty( $keyword ))
                 {
-              		$msgType = "text";
-                   	$contentStr = "Up And Running" ;               	
-
+              		$msgType = "text";                   	             	
+                   	if($keyword == 'send demo')
+                        $contentStr = "Check here: http://nitzanb.1.wechat.dev2.spotoption.com/demo.php";   
+                    else 
+                    	$contentStr = "Up And Running" ;  
                 	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
 
                 /*
@@ -120,7 +122,10 @@ class WeChat
 				 *	Or a blank response (Empty string) in order to not send anything to the client.				 *	
                  */
                 	//Use the empty echo for no response
-                	echo "";
+                	if($keyword == 'send demo')
+                		echo $resultStr;
+                	else
+                		echo "";
                 	//Return the response:
                 	// echo $resultStr;
                 }else{
