@@ -112,7 +112,7 @@ class WeChat
                 {
               		$msgType = "text";                   	             	
                    	if($keyword == 'send demo')
-                        $contentStr = "Check here: http://nitzanb.1.wechat.dev2.spotoption.com/demo.php";   
+                        $contentStr = "Check here: http://wechat.twodiv.com/demo.php";   
                     else 
                     	$contentStr = "Up And Running" ;  
                 	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
