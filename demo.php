@@ -1,16 +1,14 @@
 <?php
-require_once "jssdk.php";
+
+
 define('APPID', 'wx09cdd5cd75ef694f');
 define('SECRET', '5f70747455db954ed58e7f4f88ec4286');
-
-$jssdk = new JSSDK(APPID, SECRET);
-$signPackage = $jssdk->GetSignPackage();
-
 define('TESTURL', 'http://wechat.twodiv.com/auth');
 
 
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
