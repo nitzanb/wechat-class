@@ -133,7 +133,15 @@ class WeChat
         }
     }
 
-
+    public function authenticateUser()
+    {
+    	$AuthUrl = 'https://api.wechat.com/sns/oauth2/access_token?appid='.$this->appId.'&secret='.$this->appSecret.'&code='.$_GET['code'].'&grant_type=authorization_code';
+		$response = $this->httpGet($AuthUrl);
+		$obj = json_decode($response);
+		$info_URL = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$obj->access_token.'&openid='.$obj->openid.'&lang=zh_CN';
+		$info = $this->httpGet($info_URL);
+		return $info;
+    }
 
 	public function getSignPackage() 
 	{
